@@ -1,14 +1,14 @@
 import express from "express";
-import { deleteCar, getAllCars, getSingleCar, newCar, updateCar } from "../controller/Car.js";
+import { deleteCar, getAllCars, getSingleCar, newCar, updateCar } from "../controllers/carController.js";
+import { checkId } from "../middleware/validation.js";
 
 const router = express.Router();
 
-router.get("/cars", getAllCars);
-router.get("/cars/:id", getSingleCar);
-router.post("/cars", newCar);
-router.put("/cars/:id", updateCar);
-router.delete("/cars/:id", deleteCar);
+router.param("id", checkId);
 
-const CarRoute = router;
+router.route("/").get(getAllCars).post(newCar);
+router.route("/:id").get(getSingleCar).patch(updateCar).delete(deleteCar);
 
-export default CarRoute;
+const carRoute = router;
+
+export default carRoute;
